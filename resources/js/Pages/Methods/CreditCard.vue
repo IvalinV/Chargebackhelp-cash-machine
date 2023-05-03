@@ -27,7 +27,7 @@ const createTransaction = () => {
     form.post(route('transaction.store'), {
         onSuccess: () => window.location = route('transaction.index'),
         onError: () => null,
-        // onFinish: () => form.reset(),
+        onFinish: () => form.reset(),
     });
 };
 
