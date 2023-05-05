@@ -3,26 +3,30 @@
 namespace App\Transactions;
 
 use App\Interfaces\Transaction;
-use App\Models\CashSource;
 use Illuminate\Support\Facades\Validator;
 
 class CashTransaction implements Transaction
 {
-     private $one_bills;
-     private $five_bills;
-     private $ten_bills;
-     private $fifty_bills;
-     private $hundred_bills;
+    private $oneBills;
+    private $fiveBills;
+    private $tenBills;
+    private $fiftyBills;
+    private $hundredBills;
 
     public function __construct($data)
     {
-        $this->one_bills = $data['one_bills'];
-        $this->five_bills = $data['five_bills'];
-        $this->ten_bills = $data['ten_bills'];
-        $this->fifty_bills = $data['fifty_bills'];
-        $this->hundred_bills = $data['hundred_bills'];
+        $this->oneBills = $data['one_bills'];
+        $this->fiveBills = $data['five_bills'];
+        $this->tenBills = $data['ten_bills'];
+        $this->fiftyBills = $data['fifty_bills'];
+        $this->hundredBills = $data['hundred_bills'];
     }
 
+    /**
+     * Validate request data.
+     *
+     * @return \Illuminate\Support\Facades\Validator $validator
+     */
     public function validate()
     {
         $validator = Validator::make($this->inputs(), [
@@ -33,27 +37,36 @@ class CashTransaction implements Transaction
             'hundred_bills' => 'required',
         ]);
 
-        if($validator->fails())
-        {
+        if($validator->fails()) {
             return $validator;
         }
 
         return true;
     }
 
+    /**
+     * Calculate amoutn.
+     *
+     * @return array $amount
+     */
     public function amount()
     {
         return array_sum($this->inputs());
     }
 
+    /**
+     * Return class fileds.
+     *
+     * @return array $inputs
+     */
     public function inputs()
     {
         return [
-           'one_bills' => $this->one_bills,
-           'five_bills' => $this->five_bills,
-           'ten_bills' => $this->ten_bills,
-           'fifty_bills' => $this->fifty_bills,
-           'hundred_bills' => $this->hundred_bills
+           'one_bills' => $this->oneBills,
+           'five_bills' => $this->fiveBills,
+           'ten_bills' => $this->tenBills,
+           'fifty_bills' => $this->fiftyBills,
+           'hundred_bills' => $this->hundredBills
         ];
     }
 }

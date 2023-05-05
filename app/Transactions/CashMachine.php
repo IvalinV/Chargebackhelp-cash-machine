@@ -55,16 +55,14 @@ class CashMachine
      */
     public function storeTransaction($transaction, $source)
     {
-        // Calculate amount
         $amount = $this->calculateTransactionAmount($transaction);
-        $transactions_total_amount = $this->calculateTotalAmount();
-        $cashMachine_total_amount = config('transactions.total_amount');
+        $transactionsTotalAmount = $this->calculateTotalAmount();
+        $cashMachineTotalAmount = config('transactions.total_amount');
 
-        // Check if the amount is not exceded
-        if ($amount > $cashMachine_total_amount || $transactions_total_amount > $cashMachine_total_amount) {
+        if ($amount > $cashMachineTotalAmount || $transactionsTotalAmount > $cashMachineTotalAmount) {
             return ['Total Limit Exceded'];
         }
-        // Store evrything in the DB
+
         TransactionModel::create([
             'inputs' => json_encode($transaction->inputs()),
             'total_amount' => $amount

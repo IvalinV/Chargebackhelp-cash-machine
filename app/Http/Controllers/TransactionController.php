@@ -28,11 +28,15 @@ class TransactionController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource.
      */
     public function store(Request $request)
     {
-        $type = $request->source;
+        $validated = $request->validate([
+            'source' => 'required|string|in:Cash,BankTransfer,CreditCard'
+        ]);
+        
+        $type = $validated['source'];
         $class = "App\\Transactions\\$type"."Transaction";
         $source = new $class($request->all());
 
